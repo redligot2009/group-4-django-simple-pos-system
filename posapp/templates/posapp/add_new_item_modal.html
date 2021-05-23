@@ -1,0 +1,31 @@
+<div class="modal fade" id="addNewItem" tabindex="-1" aria-labelledby="addNewItemLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                 <h5 class="modal-title" id="addNewItemLabel">Enter Item Data</h5>
+            </div>
+            <form method="POST" action="{% url 'add_item' %}">{% csrf_token %}
+                <div class="modal-body">
+                    <div class="row align-items-center mt-4">
+                        <div class="col">
+                            <input type="text" name="item_name" class="form-control" placeholder="Item Name">
+                        </div>
+                    </div>
+                    <div class="row align-items-center mt-4">
+                        <div class="col">
+                            <input type="number" name="item_price" class="form-control" placeholder="Item cost">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="row float-right mt-4">
+                        <div class="col">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                            <input type="submit" class="btn btn-primary" value="Add Item">
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

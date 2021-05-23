@@ -1,0 +1,35 @@
+{% extends 'posapp/base.html' %}
+{% load static %}
+{% block title %} Orders List {% endblock title %}
+{% block content %}
+<div class="row g-3">
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Order Date</th>
+            <th scope="col">Total Amount</th>
+            <th scope="col">Payment Type</th>
+            <th class="text-center" scope="col">Action</th>
+        </tr>
+        </thead>
+        <tbody>
+            {% for order in orders %}
+            <tr>
+                <td class = "order-date">{{order.order_date}}</td>
+                <td class = "order-total-amount">PHP {{order.total_amount}}</td>
+                <td class="order-payment-type"> {{order.payment_type}} </td>
+                
+                <td class="text-center">
+                    <a class="btn btn-primary update-order mx-4" href="{% url 'order_details' pk=order.pk %}">Edit</button>
+                    <a class="btn btn-danger delete-order mx-4" href="{% url 'delete_order' pk=order.pk %}">Delete</a>
+                    {% comment %} <input type="hidden" class="form-control nmeid" value = {{item.pk}}> {% endcomment %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<a type="button" class="btn btn-primary" href={% url 'create_order' %}>
+    Add New Order
+</a>
+{% endblock %}

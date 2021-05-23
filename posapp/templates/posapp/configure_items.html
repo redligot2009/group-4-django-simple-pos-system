@@ -1,0 +1,37 @@
+{% extends 'posapp/base.html' %}
+{% load static %}
+{% block title %} Configure Items {% endblock title %}
+{% block content %}
+<div class="row g-3">
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Item Name</th>
+            <th scope="col">Item Price</th>
+            <th scope="col">Stock Quantity</th>
+            <th class="text-center" scope="col">Action</th>
+        </tr>
+        </thead>
+        <tbody>
+            {% for item in items %}
+            <tr>
+                <td class = "iname">{{item.item_name}}</td>
+                <td class = "iprice">PHP {{item.item_price}}</td>
+                <td class="istockq"> {{item.stock_quantity}} item{{item.stock_quantity | pluralize}} </td>
+                
+                <td class="text-center">
+                    {% include 'posapp/update_item_modal.html' with item=item %}
+                    <button data-id={{item.id}} class="btn btn-primary update-item mx-4" data-toggle="modal" data-target="#updateItem-{{item.id}}">Update</button>
+                    <a class="btn btn-danger itemdel mx-4" href="{% url 'delete_item' pk=item.pk %}">Delete</a>
+                    <input type="hidden" class="form-control nmeid" value = {{item.pk}}>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% include 'posapp/add_new_item_modal.html' with item=item %}
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addNewItem">
+    Add New Item
+</button>
+{% endblock %}

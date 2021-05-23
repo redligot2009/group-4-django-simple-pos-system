@@ -1,0 +1,25 @@
+{% extends 'posapp/base.html' %}
+{% block title %} Home Page | Simple Django POS System {% endblock title %}
+{% block content %}
+<div class="row g-3">
+  <div class="col-sm-4">
+    <div class="card">
+      <h5 class="card-title">Configure Items</h5>
+      <p class="card-text">
+        View, add, edit, delete items' names, prices, stock, etc.
+      </p>
+      <a href="{% url 'configure_items' %}" class="card-link">Visit Page</a>
+    </div>
+  </div>
+  
+  <div class="col-sm-4">
+    <div class="card">
+      <h5 class="card-title">Order Log</h5>
+      <p class="card-text">
+        View, add, edit, delete order data.
+      </p>
+      <a href="{% url 'list_orders' %}" class="card-link">Visit Page</a>
+    </div>
+  </div>
+</div>
+{% endblock content %}

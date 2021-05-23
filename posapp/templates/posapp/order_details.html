@@ -1,0 +1,150 @@
+{% extends 'posapp/base.html' %}
+{% block title %} Order Details {% endblock title %}
+{% block content %}
+<div class="row g-3">
+  <div class="col-md-5 col-lg-4">
+    <h4 class="d-flex justify-content-between align-items-center mb-3">
+      <span class="text-muted">Current Order</span>
+    </h4>
+    <h4 class="d-flex justify-content-between align-items-center mb-3">
+      <span>Total (PHP)</span>
+      <span id="totamt"> {{order.total_amount_paid}} </span>
+    </h4>
+    {% comment %} Orders Show Up Here {% endcomment %}
+    <ul class="list-group mb-3" id="ord">
+      {% for order_item in order.orderitem_set.all %}
+        <li class="list-group-item d-flex justify-content-between lh-sm">
+          <div>
+            <h6 class="my-0 order-item-name"> {{ order_item.item_type.item_name }} </h6>
+            <small class="text-muted"> {{ order_item.item_type.item_price }} x <span class="order-item-quantity"> {{order_item.quantity}} </span></small>
+          </div>
+          <span class="text-muted"> PHP {{order_item.line_total}} </span>
+        </li>
+      {% endfor %}
+      <li>
+
+      </li>
+    </ul>
+    {% comment %} Form for adding new items to the current order {% endcomment %}
+    <form method="POST" action={% url 'update_order' pk=order.id %}>  
+    {% csrf_token %}
+      <h4 class="mb-3">Payment Type</h4>
+      <div class="my-3">
+        <div class="form-check">
+          <input {% if order.payment_type == 'C' %} checked {% endif %} id="credit" name="payment_type" type="radio" class="form-check-input" value='C'>
+          <label class="form-check-label" for="credit">Cash </label>
+        </div>
+        <div class="form-check">
+          <input {% if order.payment_type == 'CR' %} checked {% endif %} id="debit" name="payment_type" type="radio" class="form-check-input" value='CR'>
+          <label class="form-check-label" for="debit">Credit card</label>
+        </div>
+      </div>
+      <input type="hidden" name="complete_order" id="complete_order" value="">  
+      <input type="hidden" name="total_amount" id="total_amount" value="">  
+      <button type="submit" class="btn btn-primary" id="update-order-button">Update Order</button>
+    </form>
+  </div>  
+  <div class="col-md-7 col-lg-8">
+    <h4 class="mb-3">Items for sale</h4>
+      <div class="row g-3">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Item Name</th>
+              <th scope="col">Item Price</th>
+              <th scope="col">Order Quantity</th>
+              <th scope="col">Stock Quantity</th>
+              <th scope="col">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in items %}
+              <form method="POST" action={% url 'add_order_item' pk=order.pk %}>  
+                {% csrf_token %}
+                <tr>
+                  <td class="iname">{{item.item_name}}</td>
+                  <td class="iprice"> PHP {{item.item_price}} </td>
+                  <td>
+                    <input type="number" name='item-quantity' min="0" max={{item.stock_quantity}} class="form-control item-quantity" value=0>
+                    <input type="hidden" name='item-id' class="form-control item-id" value = {{item.pk}}>
+                  </td>
+                  <td class="istock"> {{item.stock_quantity}} item{{item.stock_quantity|pluralize}}</td>
+                  <td><button type="submit" class="btn btn-primary itembut" id='add-order-item-button'>Add</button></td>
+                </tr>
+              </form>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+  </div>
+</div>
+{% endblock content %}
+<script>
+  // WHAT THIS CODE BELOW DOES: Uses JQuery to add new order items dynamically on the page.
+  // TODO: Add code to make a post request to create a new order with specified orders.
+  // Store new items in an array of objects.
+  /*var order_items = [];
+  $(document).ready(function(){
+    console.log("HEY");
+    $('.itembut').click(function() {
+      console.log("CLICKED");
+      // Order quantity of the particular item
+      var order_quantity = $(this).parent().parent().find(".order-quantity").val();
+      // Name of the particular item
+      var item_name = $(this).parent().parent().find(".iname").html();
+      // Item ID of the particular item
+      var item_id = $(this).parent().parent().find(".nmeid").val();
+      // Price of the particular item
+      var item_price = $(this).parent().parent().find(".iprice").html();
+      // How many of this particular item are there on the order (total amount)
+      var total_amount = parseFloat($("#totamt").html());
+      // Use split to separate the "PHP" and the price proper
+      var prc_amt = prc.split(" ");
+      // Line total = the 
+      // prc_amt[1] = the price proper, multiplied by the line amount of the item in the current order.
+      var line_total = parseFloat(prc_amt[1] * parseFloat(amt));
+      //total_amount = 
+    }
+    $('#update-order-button').click(function(){
+      console.log("CLICKED");
+    })
+  })*/
+  /* $(document).ready(function(){
+        $('.itembut').click(function() {
+          var amt = $( this ).parent().parent().find(".lineamount").val();
+          var nme = $( this ).parent().parent().find(".iname").html();
+          var nmeid = $( this ).parent().parent().find(".nmeid").val();
+          var prc = $( this ).parent().parent().find(".iprice").html();
+          var tamt = parseFloat($( "#totamt").html());
+          prc_amt = prc.split(" ")
+          lt = parseFloat(prc_amt[1]) * parseFloat(amt)
+          tamt = tamt + lt
+          $( "#totamt").html(tamt.toFixed(2))
+          stuff = " "
+          stuff = stuff + '<li class="list-group-item d-flex justify-content-between lh-sm">'
+          stuff = stuff + '<div>'
+          stuff = stuff + '<h6 class="my-0 idnme">' + nme + '</h6>'
+          stuff = stuff + '<small class="text-muted">' + prc_amt[1] + ' x <span class="idamt">' + amt + '</span></small>'
+          stuff = stuff + '</div>'
+          stuff = stuff + '<span class="text-muted"> PHP ' + lt.toFixed(2) + '</span>'
+          stuff = stuff + '<input type="hidden" class="nmeid-ord" value ='+ nmeid +'>'
+          stuff = stuff + '</li>'
+          $( "#ord" ).append(stuff)
+          $( this ).parent().parent().find(".lineamount").val(0);
+          event.preventDefault()
+        });
+        $('#cls').click(function() {
+          $('#ord li').each(function(i)
+          {
+            var idnme = $(this).find(".idnme").html()
+            var idamt = $(this).find(".idamt").html()
+            var idid = $(this).find(".nmeid-ord").val()
+            var comb = idid+':'+idamt
+            $('#complete_order').val($('#complete_order').val() + comb + '-')
+          });
+          $('#total_amount').val($('#totamt').html())
+        });
+    }); */
+</script>
+
+
