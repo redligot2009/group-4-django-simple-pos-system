@@ -5,6 +5,9 @@ services:
         build: 
             context: ./app
             dockerfile: Dockerfile.prod
+            cache_from:
+                - "${WEB_IMAGE}"
+        image: "${WEB_IMAGE}"
         command: gunicorn djangoposactivity.wsgi:application --bind 0.0.0.0:8000
         volumes:
         - static_volume:/home/app/web/staticfiles
@@ -26,7 +29,11 @@ services:
         - ./.env.prod.db
     
     nginx:
-        build: ./nginx
+        build: 
+            context: ./nginx
+            cache_from: 
+                - "${NGINX_IMAGE}"
+        image: "${NGINX_IMAGE}"
         ports:
             - 1337:80
         volumes:
