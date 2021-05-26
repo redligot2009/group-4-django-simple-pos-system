@@ -7,12 +7,12 @@ services:
 
 stages:
   - build
-  - deploy
+  # - deploy
 
 variables:
   DOCKER_HOST: tcp://docker:2375
   DOCKER_DRIVER: overlay2
-  
+
 before_script:
     - export IMAGE=$CI_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME
     - export WEB_IMAGE=$IMAGE:web
@@ -35,16 +35,16 @@ build:
     - docker push $IMAGE:web
     - docker push $IMAGE:nginx
 
-deploy:
-  stage: deploy
-  script:
-    - mkdir -p ~/.ssh
-    - echo "$PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_rsa
-    - cat ~/.ssh/id_rsa
-    - chmod 700 ~/.ssh/id_rsa
-    - eval "$(ssh-agent -s)"
-    - ssh-add ~/.ssh/id_rsa
-    - ssh-keyscan -H 'gitlab.com' >> ~/.ssh/known_hosts
-    - chmod +x ./deploy.sh
-    - scp  -o StrictHostKeyChecking=no -r ./.env ./docker-compose.prod.yml ec2-user@$EC2_PUBLIC_IP_ADDRESS:/home/ec2-user/app
-    - bash ./deploy.sh
+# deploy:
+#   stage: deploy
+#   script:
+#     - mkdir -p ~/.ssh
+#     - echo "$PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_rsa
+#     - cat ~/.ssh/id_rsa
+#     - chmod 700 ~/.ssh/id_rsa
+#     - eval "$(ssh-agent -s)"
+#     - ssh-add ~/.ssh/id_rsa
+#     - ssh-keyscan -H 'gitlab.com' >> ~/.ssh/known_hosts
+#     - chmod +x ./deploy.sh
+#     - scp  -o StrictHostKeyChecking=no -r ./.env ./docker-compose.prod.yml ec2-user@$EC2_PUBLIC_IP_ADDRESS:/home/ec2-user/app
+#     - bash ./deploy.sh
