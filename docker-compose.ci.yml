@@ -31,7 +31,8 @@ services:
     nginx:
         build: 
             context: ./nginx
-            cache_from: "{$NGINX_IMAGE}"
+            cache_from: 
+                - "{$NGINX_IMAGE}"
         image: "{$NGINX_IMAGE}"
         ports:
             - 1337:80
