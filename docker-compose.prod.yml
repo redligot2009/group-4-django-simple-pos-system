@@ -5,9 +5,9 @@ services:
         image: "${WEB_IMAGE}"
         command: gunicorn djangoposactivity.wsgi:application --bind 0.0.0.0:8000
         volumes:
-        - static_volume:/home/app/web/staticfiles
-        expose:
-        - 8000
+        - static_volume:/usr/src/app/staticfiles
+        ports:
+        - 8000:8000
         env_file:
         - .env
         depends_on:
@@ -26,9 +26,9 @@ services:
     nginx:
         image: "${NGINX_IMAGE}"
         ports:
-            - 1337:80
+            - 80:80
         volumes:
-            - static_volume:/home/app/web/staticfiles
+            - static_volume:/usr/src/app/staticfiles
         depends_on:
           - web
 
