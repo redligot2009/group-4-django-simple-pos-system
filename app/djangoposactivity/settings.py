@@ -26,7 +26,9 @@ SECRET_KEY = os.environ.get('SECRET_KEY','4cw-%zlf-x)g@95n5v&fjkeslt--evj3s*!q+!
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = int(os.environ.get('DEBUG', default=0))
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1',os.environ.get('EC2_PUBLIC_IP_ADDRESS',default='')]
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '[::1]', '54.156.164.161', 'ec2-54-156-164-161.compute-1.amazonaws.com']
+
+ALLOWED_HOSTS += os.environ.get('EC2_PUBLIC_IP_ADDRESS',default='')
 
 # # SECURITY WARNING: keep the secret key used in production secret!
 # SECRET_KEY = os.environ.get("SECRET_KEY")
