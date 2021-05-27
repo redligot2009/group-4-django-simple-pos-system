@@ -7,8 +7,8 @@ services:
 
 stages:
   - build
-  - deploy
   - test
+  - deploy
 
 variables:
   DOCKER_HOST: tcp://docker:2375
