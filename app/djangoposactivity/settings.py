@@ -28,15 +28,8 @@ DEBUG = int(os.environ.get('DEBUG', default=0))
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', '[::1]', '54.156.164.161', 'ec2-54-156-164-161.compute-1.amazonaws.com']
 
-ALLOWED_HOSTS += os.environ.get('EC2_PUBLIC_IP_ADDRESS',default='')
-
-# # SECURITY WARNING: keep the secret key used in production secret!
-# SECRET_KEY = os.environ.get("SECRET_KEY")
-
-# # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = int(os.environ.get("DEBUG", default=0))
-
-# ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split()
+if(os.environ.get('EC2_PUBLIC_IP_ADDRESS')):
+    ALLOWED_HOSTS += os.environ.get('EC2_PUBLIC_IP_ADDRESS')
 
 # Application definition
 
