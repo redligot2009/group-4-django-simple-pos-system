@@ -28,10 +28,15 @@ services:
         env_file:
         - .env
     test:
+        build: 
+            context: ./app
+            dockerfile: Dockerfile.prod
+            cache_from:
+                - "${WEB_IMAGE}"
+        image: "${WEB_IMAGE}"
         command:
+            - python manage.py migrate
             - python manage.py test
-        depends_on: 
-            - web
     nginx:
         build: 
             context: ./nginx
