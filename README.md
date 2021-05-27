@@ -1,6 +1,6 @@
 # Group 4 Django Simple POS System
 
-A simple POS system built with Django, Bootstrap, and JQuery. Painstakingly deployed on an AWS EC2 instance (http://35.173.164.153/), with a simple CI/CD pipeline using Gitlab for our **ISCS 30.28A-Q4 (Introduction to Continous Integration / Delivery)** class.
+A simple POS system built with Django, Bootstrap, and JQuery. Painstakingly deployed on an AWS EC2 instance (http://54.156.164.161/), with a simple CI/CD pipeline using Gitlab for our **ISCS 30.28A-Q4 (Introduction to Continous Integration / Delivery)** class.
 
 ## Resources consulted ##
 
