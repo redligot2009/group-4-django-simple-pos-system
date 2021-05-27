@@ -27,7 +27,11 @@ services:
         - POSTGRES_DB=posdb_prod
         env_file:
         - .env
-    
+    test:
+        command:
+            - python manage.py test
+        depends_on: 
+            - web
     nginx:
         build: 
             context: ./nginx
