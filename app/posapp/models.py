@@ -20,7 +20,6 @@ class Order(models.Model):
     payment_choices = [('C','Cash'),
                        ('CR','Credit Card')]
     payment_type = models.CharField(default='C',max_length=255,choices=payment_choices)
-    pass
 
 class OrderItem(models.Model):
     item_type = models.ForeignKey(to=Item,null=True,on_delete=models.CASCADE)
@@ -28,6 +27,5 @@ class OrderItem(models.Model):
     line_total = models.DecimalField(max_digits=20,decimal_places=2)
     quantity = models.IntegerField(default=1)
     
-    # def __str__(self):
-    #     return self.quantity + " x " + str(self.item_type.item_name)
-    pass
+    def __str__(self):
+        return str(self.quantity) + " x " + str(self.item_type.item_name)
