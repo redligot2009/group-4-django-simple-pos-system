@@ -37,7 +37,7 @@ test:
   script:
     - docker pull $IMAGE:web || true
     - docker pull $IMAGE:nginx || true
-    - docker-compose -f docker-compose.ci.yml run test
+    - docker-compose -f docker-compose.test.yml build
 
 deploy:
   stage: deploy
