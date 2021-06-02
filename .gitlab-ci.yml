@@ -38,7 +38,7 @@ test:
     - docker pull $IMAGE:web || true
     - docker pull $IMAGE:nginx || true
     - docker-compose -f docker-compose.test.yml up -d
-    - docker exec -it group-4-django-simple-pos-system_web_1 python.manage.py test
+    - docker exec group-4-django-simple-pos-system_web_1 python.manage.py test
     - docker-compose -f docker-compose.test.yml down -v
 deploy:
   stage: deploy
