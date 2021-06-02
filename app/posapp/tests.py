@@ -108,7 +108,7 @@ class ItemViewTests(TestCase):
         item_to_update = Item.objects.first()
         item_pk = item_to_update.id
         response = self.client.post(reverse('update_item',kwargs={'pk':item_pk}),
-            {"item_name": "Test Item A",
+            {"item_name": "Test Item B",
             "item_price": 25,
             "stock_quantity": 15})
         self.assertEqual(response.status_code, 302)
