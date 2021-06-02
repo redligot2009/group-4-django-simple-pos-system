@@ -10,36 +10,30 @@ services:
         image: "${WEB_IMAGE}"
         command: python manage.py test
         volumes:
-        - static_volume:/usr/src/app/staticfiles
-        expose:
-        - 8000
-        env_file:
-        - .env
+        - ./app/:/usr/src/app/
+        ports:
+        - 8000:8000
+        environment:
+            - DEBUG=1
+            - SECRET_KEY='4cw-%zlf-x)g@95n5v&fjkeslt--evj3s*!q+!6atil_-rf$c='
+            - DJANGO_ALLOWED_HOSTS=localhost 127.0.0.1 [::1]
+            - SQL_ENGINE=django.db.backends.postgresql
+            - SQL_DATABASE=posdb
+            - SQL_USER=root
+            - SQL_PASSWORD=password
+            - SQL_HOST=db
+            - SQL_PORT=5432
+            - DATABASE=postgres
         depends_on:
-        - db
+            - db
     db:
         image: postgres:12.2-alpine
         volumes:
-        - postgres_data:/var/lib/postgresql/data/
+            - postgres_data:/var/lib/postgresql/data/
         environment:
-        - POSTGRES_USER=root
-        - POSTGRES_PASSWORD=password
-        - POSTGRES_DB=posdb_prod
-        env_file:
-        - .env
-    nginx:
-        build: 
-            context: ./nginx
-            cache_from: 
-                - "${NGINX_IMAGE}"
-        image: "${NGINX_IMAGE}"
-        ports:
-            - 80:80
-        volumes:
-            - static_volume:/usr/src/app/staticfiles
-        depends_on:
-          - web
+            - POSTGRES_USER=root
+            - POSTGRES_PASSWORD=password
+            - POSTGRES_DB=posdb
 
 volumes:
     postgres_data:
-    static_volume:
