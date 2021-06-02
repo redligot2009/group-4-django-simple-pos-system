@@ -38,6 +38,7 @@ test:
     - docker pull $IMAGE:web || true
     - docker pull $IMAGE:nginx || true
     - docker-compose -f docker-compose.test.yml build
+    - python manage.py test
 
 deploy:
   stage: deploy

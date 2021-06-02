@@ -4,11 +4,11 @@ services:
     web:
         build: 
             context: ./app
-            dockerfile: Dockerfile.test
+            dockerfile: Dockerfile.prod
             cache_from:
                 - "${WEB_IMAGE}"
         image: "${WEB_IMAGE}"
-        command: python manage.py test
+        command: gunicorn djangoposactivity.wsgi:application --bind 0.0.0.0:8000
         volumes:
         - static_volume:/usr/src/app/staticfiles
         expose:
