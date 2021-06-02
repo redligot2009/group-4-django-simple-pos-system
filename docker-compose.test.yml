@@ -2,8 +2,12 @@ version: '3.7'
 
 services:
     web:
+        build: 
+            context: ./app
+            dockerfile: Dockerfile.test
+            cache_from:
+                - "${WEB_IMAGE}"
         image: "${WEB_IMAGE}"
-        build: ./app
         command: python manage.py test
         volumes:
         - ./app/:/usr/src/app/
